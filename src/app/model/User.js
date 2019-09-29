@@ -1,7 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 
 class User extends Model {
-  static init(squelize) {
+  static init(sequelize) {
     super.init(
       {
         name: Sequelize.STRING,
@@ -10,7 +10,7 @@ class User extends Model {
         provaider: Sequelize.BOOLEAN,
       },
       {
-        Sequelize,
+        sequelize,
       },
     );
   }
