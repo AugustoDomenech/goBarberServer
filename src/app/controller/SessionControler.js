@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 import User from '../model/User'
 
 class SessionControler {
@@ -18,14 +20,19 @@ class SessionControler {
       return res.status(401).json({error: 'Password does not match !'});
     }; 
 
+    // Pegamos algumas informações a mais para retornar na resposta
     const {id, name} = user;
 
+    //Enviamos uma resposta com os dados do usuário e o seu token
     return res.json({
       user: {id, 
             name, 
             email,
-      }
-    })
+      },
+      token: jwt.sign({id}, 
+                      'ed8fe70bc9b4739591d504be8310deec',
+                      {expiresIn: '7d'})
+                    })
   }; 
 };
 
