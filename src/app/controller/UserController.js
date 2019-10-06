@@ -1,15 +1,27 @@
 import User from '../model/User'
 
+import * as Yup from 'yup';
+
 
 class UserController{
   async store(req, res) {
+
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().required().min(6),
+    });
+
+    if (!(await schema.isValid(req.body))){
+      return res.status(400).json({error: 'Validation fails'});
+    };
+
+
     const UsertExist = await User.findOne({where: { email : req.body.email }})
     
     if (UsertExist) {
       return res.status(400).json({error: "Usuario já existente"})
     }  
-
-
 
     const {name, email, provider} = await User.create(req.body);
 
@@ -23,6 +35,26 @@ class UserController{
   //Metado de alteração de dados do ususários
   async update(req, res) {
       
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      email: Yup.string().email(),
+      oldPassword: Yup.string().min(6),
+      password: Yup.string()
+                .min(6)
+                .when('oldPassword', (oldPassword, field) =>
+                oldPassword ? field.required() : field
+                ),
+      confirmePassword: Yup.string()
+                           .when('password', (password, field) =>
+                           password ? field.required().oneOf([Yup.ref('password')]) : field
+                           )
+
+    });
+
+    if (!(await schema.isValid(req.body))){
+      return res.status(400).json({error: 'Validation fails'});
+    };
+
     //Pegamos o email e a senha antiga do corpo da requisição
     const {email, oldPassword} = req.body;
     
@@ -54,7 +86,5 @@ class UserController{
       provider
     })
   };
-
-
 };
 export default new UserController();
