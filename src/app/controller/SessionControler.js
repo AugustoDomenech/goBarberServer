@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 
 import User from '../model/User'
 
+import authConfig from '../../config/auth';
+
 class SessionControler {
   async store(req, res) {
     //Pegamos os valores de validação na requisição
@@ -30,8 +32,10 @@ class SessionControler {
             email,
       },
       token: jwt.sign({id}, 
-                      'ed8fe70bc9b4739591d504be8310deec',
-                      {expiresIn: '7d'})
+                      authConfig.secret,
+                      { 
+                        expiresIn: authConfig.expiresIn 
+                      })
                     })
   }; 
 };
