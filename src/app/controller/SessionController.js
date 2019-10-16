@@ -4,6 +4,8 @@ import User from '../model/User'
 
 import authConfig from '../../config/auth';
 
+import * as Yup from 'yup';
+
 class SessionControler {
   async store(req, res) {
     
