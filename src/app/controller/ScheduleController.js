@@ -32,9 +32,9 @@ class ScheduleController {
         canceled_at: null,
         date:{
           [Op.between]: [startOfDay(parseDate), endOfDay(parseDate)],
-        },
-      }
-
+        },        
+      },
+      order:['date']
     });
 
     res.json(appointments);
