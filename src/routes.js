@@ -8,6 +8,7 @@ import UserController from "./app/controller/UserController";
 import FileController from "./app/controller/FileController";
 import ProviderController from './app/controller/ProviderController';
 import AppointmentController from './app/controller/AppointmentController';
+import ScheduleController from './app/controller/ScheduleController';
 
 import authMiddleware from './app/middleware/auth'
 
@@ -26,5 +27,7 @@ routes.get('/providers', ProviderController.index);
 
 routes.get('/appointment', AppointmentController.index);
 routes.post('/appointment', AppointmentController.store);
+
+routes.get('/schedule', ScheduleController.index);
 
 export default routes;
